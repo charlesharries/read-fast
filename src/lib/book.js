@@ -9,6 +9,7 @@ import { Book } from 'epubjs';
  */
 function useProvideBook() {
   const [book, setBook] = useState(null);
+  const [chapter, setChapter] = useState(null);
 
   /**
    * Handle receiving an epub and load it into context
@@ -19,10 +20,12 @@ function useProvideBook() {
    */
   const handleBook = async (book) => {
     await book.opened;
+
     setBook(book);
+    setChapter(book.navigation.toc[0])
   }
 
-  return { book, handleBook }
+  return { book, chapter, setChapter, handleBook }
 }
 
 const bookContext = createContext()
@@ -33,4 +36,7 @@ export function BookProvider({ children }) {
   return <bookContext.Provider value={bookProvider}>{children}</bookContext.Provider>
 }
 
+/**
+ * @returns {{ book: Book, handleBook: Function }}
+ */
 export const useBook = () => useContext(bookContext);
