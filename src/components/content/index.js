@@ -1,6 +1,7 @@
 import {useBook} from '../../lib/book';
-import { useEffect, useRef } from 'preact/compat';
+import { useState, useEffect, useRef } from 'preact/compat';
 import { NavItem } from 'epubjs';
+import Player from '../player';
 
 /**
  * Remove all children (including text nodes) of
@@ -21,25 +22,24 @@ function removeChildren($el) {
  */
 function useContent(chapter) {
   const { book } = useBook();
-  const container = useRef();
+  const [content, setContent] = useState('');
 
   useEffect(() => {
     if (book && chapter) {
       book.load(chapter.href).then(doc => {
-        removeChildren(container.current);
-        container.current.appendChild(doc.body);
+        setContent(doc.body.textContent);
       })
     }
   }, [chapter, book])
 
-  return { container }
+  return { content }
 }
 
 export default function Content() {
   const { book, chapter } = useBook()
-  const { container } = useContent(chapter);
+  const { content } = useContent(chapter);
   
   if (!book) return <p>Load a book...</p>;
 
-  return <div className="Content" ref={container} />
+  return <Player content={content} />
 }
