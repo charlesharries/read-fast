@@ -13,6 +13,18 @@ export default function TableOfContents() {
           <Button class="button" onClick={() => setChapter(chapter)}>
             {chapter.label}
           </Button>
+
+          {chapter.subitems?.length ? (
+            <ul>
+              {chapter.subitems.map((item) => (
+                <li>
+                  <Button class="button" onClick={() => setChapter(item)}>
+                    {item.label}
+                  </Button>
+                </li>
+              ))}
+            </ul>
+          ) : null}
         </li>
       ))}
     </ul>

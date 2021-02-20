@@ -1,21 +1,26 @@
-import {useRef} from 'preact/hooks';
-import Button from '../button';
+import { useRef } from 'preact/hooks';
 import ePub from 'epubjs';
+import Button from '../button';
 import { useBook } from '../../lib/book';
+import { saveBook } from '../../lib/storage';
 
 export default function Uploader() {
   const uploader = useRef(null);
-  const { handleBook } = useBook()
+  const { handleBook } = useBook();
 
-  function handleSubmit(e) {
+  async function handleSubmit(e) {
     e.preventDefault();
 
     try {
-      const epub = ePub(uploader.current.files[0]);
+      const file = uploader.current.files[0];
+      const book = ePub(file);
 
-      handleBook(epub);
+      await handleBook(book);
+
+      // Save the book to localstorage
+      saveBook(file, book.packaging.metadata.title);
     } catch (err) {
-      console.error(err)
+      console.error(err);
     }
   }
 
@@ -25,5 +30,5 @@ export default function Uploader() {
 
       <Button type="submit">Upload</Button>
     </form>
-  )
+  );
 }
