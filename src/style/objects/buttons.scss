@@ -3,8 +3,48 @@ button {
   color: inherit;
   border: 0;
   background-color: transparent;
+  padding: 0;
 }
 
 .button {
   background-color: var(--off-background);
+  padding: calc(var(--space-sm) + 1px) var(--space-md) var(--space-sm);
+  display: inline-block;
+  border-radius: 100px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 1.3px;
+  user-select: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+
+  &--success {
+    background-color: var(--success);
+
+    &:hover {
+      background-color: var(--success-darker);
+    }
+  }
+
+  &:active,
+  &:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px var(--primary);
+  }
+
+  &--icon {
+    padding-left: calc(var(--space-md) - 4px)
+  }
+
+  svg {
+    display: inline-block;
+    width: 20px;
+    height: auto;
+    margin-right: var(--space-xs);
+  }
 }

@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import usePlayer from '../../hooks/usePlayer';
+import usePlayer from '../hooks/usePlayer';
 
 export default function Player({ content = '' }) {
   const { words, index, play, pause, isPlaying } = usePlayer(content);

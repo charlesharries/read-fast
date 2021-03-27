@@ -1,0 +1,24 @@
+.page {
+  display: flex;
+  height: 100%;
+  width: 100%;
+}
+
+.sidebar {
+  width: 250px;
+  border-right: 1px solid var(--border);
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+
+  .toc {
+    flex: 1;
+    overflow: auto;
+  }
+}
+
+.reader {
+  flex: 1;
+  height: 100%;
+  width: 100%;
+}
