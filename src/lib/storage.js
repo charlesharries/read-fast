@@ -4,6 +4,10 @@
  * @returns {Array.<string>}
  */
 export function getBooks() {
+  if (typeof localStorage === 'undefined') {
+    return [];
+  }
+
   return JSON.parse(localStorage.getItem('readfast_books') || '[]');
 }
 
