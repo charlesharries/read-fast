@@ -1,0 +1,14 @@
+.player {
+  display: flex;
+  height: 100%;
+  flex-direction: column;
+}
+
+.player__content {
+  border-bottom: 1px solid var(--border);
+}
+
+.player__context {
+  flex: 1;
+  overflow: auto;
+}

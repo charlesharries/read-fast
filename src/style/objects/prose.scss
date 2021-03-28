@@ -1,0 +1,7 @@
+.prose {
+  p {
+    & + p {
+      margin-top: 10px;
+    }
+  }
+}

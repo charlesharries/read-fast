@@ -1,7 +1,8 @@
-import { useState, useEffect, useRef } from 'preact/compat';
+import { useState, useEffect, createContext } from 'preact/compat';
 import { NavItem } from 'epubjs';
 import { useBook } from '../lib/book';
 import Player from './player';
+import Context from './context';
 
 /**
  * Remove all children (including text nodes) of

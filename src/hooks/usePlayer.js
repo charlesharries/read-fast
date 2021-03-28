@@ -40,6 +40,10 @@ function memoizedWordTime(avg) {
   };
 }
 
+export function wordsify(content) {
+  return content.split(/[\r\n]+/).map((p) => p.split(/\s+/).filter((w) => !!w));
+}
+
 export default function usePlayer(content) {
   const indexRef = useRef(0);
   const previousTimeRef = useRef(0);
@@ -48,7 +52,8 @@ export default function usePlayer(content) {
   const [index, setIndex] = useState(indexRef.current);
   const [isPlaying, setIsPlaying] = useState(isPlayingRef.current);
 
-  const words = content.split(/\s+/).filter((w) => !!w);
+  const paras = wordsify(content);
+  const words = paras.reduce((a, p) => [...a, ...p]);
 
   /**
    * The average length of the words in the given content.
@@ -103,6 +108,7 @@ export default function usePlayer(content) {
     play: () => setIsPlaying(true),
     pause: () => setIsPlaying(false),
     index,
+    setIndex,
     words,
     isPlaying,
   };
