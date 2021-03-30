@@ -8,7 +8,7 @@ export function getBooks() {
     return [];
   }
 
-  return JSON.parse(localStorage.getItem('readfast_books') || '[]');
+  return JSON.parse(localStorage.getItem('read_fast_books') || '[]');
 }
 
 /**
@@ -22,19 +22,13 @@ export function saveBook(epub, title) {
     const books = getBooks();
     books.push(title);
 
-    localStorage.setItem('readfast_books', JSON.stringify(books));
-    localStorage.setItem(`readfast_book_${title}`, event.target.result);
+    localStorage.setItem('read_fast_books', JSON.stringify(books));
+    localStorage.setItem(`read_fast_book:${title}`, event.target.result);
   };
 
   reader.readAsDataURL(epub);
 }
 
 export function loadBookFile(title) {
-  return localStorage.getItem(`readfast_book_${title}`);
-  // const encodedBook = localStorage.getItem(`readfast_book_${title}`);
-  // const parts = encodedBook.split(',');
-  // const type = parts[0].split(';')[1];
-  // const content = parts[1];
-  // console.log({ content });
-  // return new File([content], title, { type });
+  return localStorage.getItem(`read_fast_book:${title}`);
 }

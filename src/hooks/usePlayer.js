@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from 'preact/compat';
+import { useBook, getTitle, currentPosition } from '../lib/book';
 
 const wpm = 500;
 
@@ -45,15 +46,26 @@ export function wordsify(content) {
 }
 
 export default function usePlayer(content) {
-  const indexRef = useRef(0);
+  const { chapter, book } = useBook();
+
+  const position = useRef(currentPosition(book));
+  let initialIndex = 0;
+  if (position.current && position.current.chapter.id === chapter.id) {
+    initialIndex = position.current.index;
+  }
+
+  const indexRef = useRef(initialIndex);
   const previousTimeRef = useRef(0);
   const isPlayingRef = useRef(false);
   const requestRef = useRef();
+  const saveInterval = useRef(null);
   const [index, setIndex] = useState(indexRef.current);
   const [isPlaying, setIsPlaying] = useState(isPlayingRef.current);
 
   const paras = wordsify(content);
   const words = paras.reduce((a, p) => [...a, ...p]);
+
+  const hasPositionForThisChapter = position.current && position.current.chapter.id === chapter.id;
 
   /**
    * The average length of the words in the given content.
@@ -64,6 +76,13 @@ export default function usePlayer(content) {
 
   // Build the function for memoizing word times.
   const wordTime = memoizedWordTime(avgWord);
+
+  function savePosition() {
+    const position = `${chapter.id}:${indexRef.current}`;
+    const title = getTitle(book);
+
+    localStorage.setItem(`read_fast_position:${title}`, position);
+  }
 
   /**
    * Handle a single frame of animation.
@@ -90,14 +109,29 @@ export default function usePlayer(content) {
     requestRef.current = requestAnimationFrame(tick);
   }
 
+  // When we change chapters, we want to reset our index.
+  useEffect(() => {
+    if (!hasPositionForThisChapter) {
+      indexRef.current = 0;
+      setIndex(0);
+    } else {
+      indexRef.current = position.current.index;
+      setIndex(position.current.index);
+    }
+  }, [content.length, hasPositionForThisChapter]);
+
   // Handle playing/pausing.
   useEffect(() => {
     isPlayingRef.current = isPlaying;
 
     if (isPlayingRef.current) {
       requestRef.current = requestAnimationFrame(tick);
+
+      saveInterval.current = setInterval(savePosition, 1500);
     } else {
       cancelAnimationFrame(tick);
+
+      clearInterval(saveInterval.current);
     }
 
     return () => cancelAnimationFrame(tick);

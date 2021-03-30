@@ -2,6 +2,29 @@ import { useState, useContext, createContext } from 'preact/compat';
 import ePub, { Book } from 'epubjs';
 
 /**
+ *
+ * @param   {Book} book
+ * @returns {string}
+ */
+export function getTitle(book) {
+  return book.packaging.metadata.title;
+}
+
+export function currentPosition(book) {
+  if (!localStorage) return null;
+
+  if (localStorage.getItem(`read_fast_position:${getTitle(book)}`)) {
+    const [chapId, index] = localStorage.getItem(`read_fast_position:${getTitle(book)}`).split(':');
+
+    const chapter = book.navigation.toc.find((chap) => chap.id === chapId);
+
+    return { chapter, index: parseInt(index, 10) };
+  }
+
+  return null;
+}
+
+/**
  * Provide a book and a set of options for handling
  * uploading and reading books.
  *
@@ -18,11 +41,13 @@ function useProvideBook() {
    * @param   {any} book
    * @returns {void}
    */
-  const handleBook = async (book) => {
-    await book.opened;
+  const handleBook = async (bk) => {
+    await bk.opened;
 
-    setBook(book);
-    setChapter(book.navigation.toc[0]);
+    setBook(bk);
+
+    const position = currentPosition(bk);
+    setChapter(position ? position.chapter : bk.navigation.toc[0]);
   };
 
   return { book, chapter, setChapter, handleBook };

@@ -11,8 +11,6 @@ function Chapter({ setChapter, chapter }) {
 export default function TableOfContents() {
   const { book, setChapter } = useBook();
 
-  console.log({ book });
-
   if (!book) return null;
 
   return (
