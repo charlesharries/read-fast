@@ -1,16 +1,17 @@
-import { Router } from 'preact-router';
+import { Route, Router } from 'preact-router';
+import { JSX } from 'preact/jsx-runtime';
 import { BookProvider } from '../lib/book';
 
 // Code-splitting is automated for `routes` directory
 import Home from '../routes/home';
 import Error404 from '../routes/error404';
 
-const App = () => (
+const App = (): JSX.Element => (
   <div id="app">
     <BookProvider>
       <Router>
-        <Home path="/" />
-        <Error404 default />
+        <Route path="/" component={Home} />
+        <Route default component={Error404} />
       </Router>
     </BookProvider>
   </div>

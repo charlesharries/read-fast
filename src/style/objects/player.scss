@@ -11,4 +11,6 @@
 .player__context {
   flex: 1;
   overflow: auto;
+  scroll-behavior: smooth;
+  scroll-padding-top: 20px;
 }

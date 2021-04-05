@@ -1,20 +1,24 @@
 import ePub from 'epubjs';
+import { JSX } from 'preact/jsx-runtime';
 import { useBook } from '../lib/book';
 import { getBooks, loadBookFile } from '../lib/storage';
 
-export default function Library() {
+export default function Library(): JSX.Element {
   const books = getBooks();
 
   const { handleBook } = useBook();
 
-  function loadBook(title) {
+  async function loadBook(title: string) {
     const file = loadBookFile(title);
+    if (!file) {
+      return;
+    }
 
     const book = ePub(file, { encoding: 'base64' });
     const b64 = file.replace('data:application/epub+zip;base64,', '');
-    book.open(b64);
 
-    handleBook(book);
+    await book.open(b64);
+    await handleBook(book);
   }
 
   return (

@@ -1,6 +1,13 @@
+import { NavItem } from 'epubjs';
+import { JSX } from 'preact/jsx-runtime';
 import { useBook } from '../lib/book';
 
-function Chapter({ setChapter, chapter }) {
+type ChapterProps = {
+  setChapter: (chapter: NavItem) => void;
+  chapter: NavItem;
+};
+
+function Chapter({ setChapter, chapter }: ChapterProps) {
   return (
     <button type="button" className="text-left" onClick={() => setChapter(chapter)}>
       {chapter.label}
@@ -8,10 +15,10 @@ function Chapter({ setChapter, chapter }) {
   );
 }
 
-export default function TableOfContents() {
+export default function TableOfContents(): JSX.Element | null {
   const { book, setChapter } = useBook();
 
-  if (!book) return null;
+  if (!book?.packaging?.metadata) return null;
 
   return (
     <div className="toc stack stack--md p-md">

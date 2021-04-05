@@ -1,25 +1,33 @@
 import { useRef } from 'preact/hooks';
 import ePub from 'epubjs';
+import { JSX } from 'preact/jsx-runtime';
 import { useBook } from '../lib/book';
 import { saveBook } from '../lib/storage';
 
-export default function Uploader() {
-  const uploader = useRef(null);
+export default function Uploader(): JSX.Element {
+  const uploader = useRef<HTMLInputElement>(null);
   const { handleBook } = useBook();
 
-  function handleKey(event) {
-    if (event.which === 32 || event.which === 13) {
+  function handleKey(event: KeyboardEvent) {
+    if (event.code === 'Space' || event.code === 'Enter') {
       event.preventDefault();
       uploader.current.click();
     }
   }
 
-  async function upload(e) {
+  async function upload(e: Event) {
     e.preventDefault();
 
     try {
-      const file = uploader.current.files[0];
-      const book = ePub(file);
+      const file = uploader.current.files?.[0];
+      if (!file) {
+        return;
+      }
+
+      // Casting to any because the type definition hasn't bee updated
+      // on the live site.
+      // @todo: Remove this cast.
+      const book = ePub((await file.arrayBuffer()) as any);
 
       await handleBook(book);
 
@@ -36,7 +44,7 @@ export default function Uploader() {
         <span
           role="button"
           aria-controls="book"
-          tabIndex="0"
+          tabIndex={0}
           onKeyPress={handleKey}
           onKeyUp={handleKey}
           className="button button--icon button--success"
