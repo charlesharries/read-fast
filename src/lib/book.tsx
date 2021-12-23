@@ -30,7 +30,7 @@ type BookContext = {
  * @param {Book} book
  * @returns {string}
  */
-export function getTitle(book: Book): string {
+export function getTitle(book: Book | null): string {
   if (!book?.packaging?.metadata) return '';
 
   return book.packaging.metadata.title;
@@ -54,7 +54,7 @@ function allNavItems(navItems: NavItem[]): NavItem[] {
  * @param {Book} book
  * @returns {Position | null}
  */
-export function currentPosition(book: Book): Position | null {
+export function currentPosition(book: Book | null): Position | null {
   if (!(localStorage && book)) return null;
 
   const pos = localStorage.getItem(`read_fast_position:${getTitle(book)}`);
