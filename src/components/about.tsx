@@ -25,7 +25,9 @@ export default function About(): JSX.Element {
 
       <h2>Credit</h2>
       <p>
-        <a href="https://charlesharri.es">Charles Harries - 2021</a>
+        <a className="link" href="https://charlesharri.es">
+          Charles Harries // 2021
+        </a>
       </p>
     </div>
   );
