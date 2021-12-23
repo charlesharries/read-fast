@@ -17,6 +17,9 @@
   }
 }
 
+.d-flex { display: flex !important; }
+.justify-between { justify-content: space-between !important; }
+
 .reader {
   flex: 1;
   height: 100%;

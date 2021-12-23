@@ -11,6 +11,22 @@ export function getBooks(): string[] {
   return JSON.parse(localStorage.getItem('read_fast_books') || '[]') as string[];
 }
 
+export function removeBookFile(title: string): void {
+  if (typeof localStorage === 'undefined') {
+    return;
+  }
+
+  const books = getBooks();
+  const index = books.indexOf(title);
+
+  if (index !== -1) {
+    books.splice(index, 1);
+    localStorage.setItem('read_fast_books', JSON.stringify(books));
+    localStorage.removeItem(`read_fast_book:${title}`);
+    localStorage.removeItem(`read_fast_position:${title}`);
+  }
+}
+
 /**
  * Save the book to localstorage if necessary.
  *

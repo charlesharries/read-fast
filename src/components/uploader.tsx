@@ -2,11 +2,13 @@ import { useRef } from 'preact/hooks';
 import ePub from 'epubjs';
 import { JSX } from 'preact/jsx-runtime';
 import { useBook } from '../lib/book';
+import { useLibrary } from '../lib/library';
 import { saveBook } from '../lib/storage';
 
 export default function Uploader(): JSX.Element {
   const uploader = useRef<HTMLInputElement>(null);
   const { handleBook } = useBook();
+  const { addToLibrary } = useLibrary();
 
   function handleKey(event: KeyboardEvent) {
     if (event.code === 'Space' || event.code === 'Enter') {
@@ -33,6 +35,9 @@ export default function Uploader(): JSX.Element {
 
       // Save the book to localstorage
       saveBook(file, book.packaging.metadata.title);
+
+      // And add it to our library
+      addToLibrary(book.packaging.metadata.title);
     } catch (err) {
       console.error(err);
     }

@@ -1,10 +1,14 @@
 {
   "extends": "eslint-config-wesbos/tsconfig.json",
-  "include": ["**/*"],
+  "include": [
+    "**/*"
+  ],
   "compilerOptions": {
     "jsx": "react-jsx",
     "jsxImportSource": "preact",
-    "types": ["node"],
+    "types": [
+      "node"
+    ],
     "downlevelIteration": true,
   }
 }
