@@ -18,10 +18,10 @@ type Position = {
 // BookContext represents the book context that's returned from our
 // useBook hook.
 type BookContext = {
-  book: Book;
+  book: Book | null;
   chapter: NavItem;
   setChapter: StateUpdater<NavItem>;
-  handleBook: (book: Book) => Promise<void>;
+  handleBook: (bk: Book | null) => Promise<void>;
 };
 
 /**
@@ -81,7 +81,7 @@ export function currentPosition(book: Book): Position | null {
  * @returns {BookContext}
  */
 function useProvideBook(): BookContext {
-  const [book, setBook] = useState<Book>(null!);
+  const [book, setBook] = useState<Book | null>(null);
   const [chapter, setChapter] = useState<NavItem>(emptyNavItem);
 
   /**
@@ -91,9 +91,13 @@ function useProvideBook(): BookContext {
    * @param   {Book} book
    * @returns {Promise<void>}
    */
-  const handleBook = async (bk: Book) => {
-    await bk.opened;
+  const handleBook = async (bk: Book | null) => {
+    if (!bk) {
+      setBook(bk);
+      return;
+    }
 
+    await bk.opened;
     setBook(bk);
 
     const position = currentPosition(bk);

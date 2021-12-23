@@ -1,6 +1,7 @@
 import { useState, useContext, createContext } from 'preact/compat';
 import { ComponentChildren, JSX } from 'preact';
 import { getBooks } from './storage';
+import { useBook } from './book';
 
 // LibraryContext represents the library context that's returned from
 // our useLibrary hook.
@@ -18,14 +19,16 @@ type LibraryContext = {
  */
 function useProvideLibrary(): LibraryContext {
   const [books, setBooks] = useState<string[]>(getBooks());
+  const { handleBook } = useBook();
 
   function addToLibrary(title: string) {
     const newBooks = new Set([...books, title]);
     setBooks(Array.from(newBooks));
   }
 
-  function removeFromLibrary(title: string) {
+  async function removeFromLibrary(title: string) {
     const newBooks = new Set(books.filter((book) => book !== title));
+    await handleBook(null);
     setBooks(Array.from(newBooks));
   }
 
