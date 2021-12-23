@@ -2,6 +2,7 @@ import { useState, useEffect, JSX } from 'preact/compat';
 import { NavItem } from 'epubjs';
 import { useBook } from '../lib/book';
 import Player from './player';
+import About from './about';
 
 /**
  * Load the content for the given chapter.
@@ -15,6 +16,7 @@ function useContent(chapter: NavItem) {
   useEffect(() => {
     if (book && chapter?.href) {
       const [url] = chapter.href.split(/[#?]/);
+      console.log({ chapter, url });
 
       book
         .load(url)
@@ -33,7 +35,7 @@ export default function Content(): JSX.Element {
   const { book, chapter } = useBook();
   const { content } = useContent(chapter);
 
-  if (!book?.packaging?.metadata) return <p>Load a book...</p>;
+  if (!book?.packaging?.metadata) return <About />;
 
   return <Player content={content} />;
 }

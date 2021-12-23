@@ -19,7 +19,7 @@ type LibraryContext = {
  */
 function useProvideLibrary(): LibraryContext {
   const [books, setBooks] = useState<string[]>(getBooks());
-  const { handleBook } = useBook();
+  const { book: currentBook, handleBook } = useBook();
 
   function addToLibrary(title: string) {
     const newBooks = new Set([...books, title]);
@@ -28,7 +28,12 @@ function useProvideLibrary(): LibraryContext {
 
   async function removeFromLibrary(title: string) {
     const newBooks = new Set(books.filter((book) => book !== title));
-    await handleBook(null);
+
+    // If the book we're removing is the current book, unload it.
+    if (currentBook?.packaging.metadata.title === title) {
+      await handleBook(null);
+    }
+
     setBooks(Array.from(newBooks));
   }
 

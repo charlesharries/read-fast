@@ -19,16 +19,13 @@ export default function Library(): JSX.Element {
       return;
     }
 
-    console.log('no file found');
-
     const book = ePub(file, { encoding: 'base64' });
     const b64 = file.replace('data:application/epub+zip;base64,', '');
 
     await book.open(b64);
     await handleBook(book);
+    console.log({ book });
   }
-
-  console.log({ books });
 
   return (
     <div className="library p-md stack stack--md">
