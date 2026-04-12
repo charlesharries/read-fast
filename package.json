@@ -39,7 +39,7 @@
     "jest-preset-preact": "^1.0.0",
     "node-sass": "^5.0.0",
     "preact-cli": "^3.0.0",
-    "prettier": "^2.2.1",
+    "prettier": "^3.8.2",
     "sass-loader": "^16.0.7",
     "sirv-cli": "3.0.1",
     "typescript": "^4.2.3"
