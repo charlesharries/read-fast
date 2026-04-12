@@ -46,7 +46,7 @@
   },
   "dependencies": {
     "epubjs": "^0.3.88",
-    "preact": "^10.3.2",
+    "preact": "^10.29.1",
     "preact-render-to-string": "^6.6.7",
     "preact-router": "^3.2.1",
     "prop-types": "^15.7.2"
