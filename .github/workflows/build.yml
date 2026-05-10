@@ -16,6 +16,6 @@ jobs:
           node-version: '22'
           cache: 'npm'
 
-      - run: npm ci --ignore-scripts --legacy-peer-deps
+      - run: npm ci --ignore-scripts
 
       - run: npm run build
