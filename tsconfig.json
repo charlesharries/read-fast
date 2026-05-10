@@ -1,14 +1,15 @@
 {
-  "extends": "eslint-config-wesbos/tsconfig.json",
-  "include": [
-    "**/*"
-  ],
+  "include": ["**/*"],
   "compilerOptions": {
+    "module": "esnext",
+    "target": "esnext",
+    "moduleResolution": "node",
+    "strict": true,
+    "lib": ["ESNext", "DOM", "DOM.Iterable"],
+    "skipLibCheck": true,
     "jsx": "react-jsx",
     "jsxImportSource": "preact",
-    "types": [
-      "node"
-    ],
-    "downlevelIteration": true,
+    "types": ["node"],
+    "downlevelIteration": true
   }
 }
